@@ -1,57 +1,53 @@
 "use client";
-import { useGlobalState } from "./context/GlobalState";
+
+// ==================="this context from registration file"==========================
+import { useGlobalState } from "../registration/context/GlobalState";
+// ==================="this context from registration file"==========================
+
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { apiRequest } from "@/lib/request";
 
-export default function RegistrationForm() {
-    const { userName, setUserName, email, setEmail, password, setPassword } = useGlobalState();
+export default function LoginForm() {
+    const { email, setEmail, password, setPassword } = useGlobalState();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const payload = 
-            {
-                name: userName,
-                email: email,
-                password: password
-            }
-        ;
+        const payload = {
+            email: email,
+            password: password
+        };
+
         try {
-            const result = await apiRequest("users/register", {
+            const result = await apiRequest("users/login", {
                 method: "POST",
                 body: payload,
             });
 
-            console.log("Registration successful:", result);
+            console.log("Login successful:", result);
+
+            // Example: save token to localStorage
+            if (result.token) {
+                localStorage.setItem("jwt", result.token);
+            }
         } catch (error) {
-            console.error("Error registering:", error);
+            console.error("Error logging in:", error);
         }
     };
 
     return (
         <Card className="w-full max-w-sm">
             <CardHeader>
-                <CardTitle>انشاء حساب خاص بك</CardTitle>
+                <CardTitle>تسجيل الدخول</CardTitle>
             </CardHeader>
             <CardContent>
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-col gap-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="username">اسم المستخدم</Label>
-                            <Input
-                                id="username"
-                                type="text"
-                                placeholder="ahmed ali"
-                                value={userName}
-                                onChange={(e) => setUserName(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="grid gap-2">
-                            <Label htmlFor="email">البريد الالكتروني</Label>
+                            <Label htmlFor="email">البريد الإلكتروني</Label>
                             <Input
                                 id="email"
                                 type="email"
@@ -74,7 +70,7 @@ export default function RegistrationForm() {
                     </div>
                     <CardFooter className="flex-col gap-2 mt-4">
                         <Button type="submit" className="w-full">
-                            انشاء حساب
+                            تسجيل الدخول
                         </Button>
                     </CardFooter>
                 </form>
