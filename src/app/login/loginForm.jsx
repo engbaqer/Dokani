@@ -66,6 +66,12 @@ export default function LoginForm() {
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
+                            <a 
+                                href="#"
+                                className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                            >
+                                نسيت كلمة المرور؟
+                            </a>
                         </div>
                     </div>
                     <CardFooter className="flex-col gap-2 mt-4">
