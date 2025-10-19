@@ -20,7 +20,7 @@ export default function LoginForm() {
             email: email,
             password: password
         };
-
+        console.log("Payload:", payload);
         try {
             const result = await apiRequest("users/login", {
                 method: "POST",

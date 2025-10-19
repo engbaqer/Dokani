@@ -1,5 +1,5 @@
 export async function apiRequest(endpoint, { method = "GET", body, token, headers = {}, isFormData = false } = {}) {
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3500/";
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/";
 
     // Prepare headers
     const finalHeaders = {
