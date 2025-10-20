@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import AddProduct from "./addProduct"
 import {
   flexRender,
   getCoreRowModel,
@@ -117,7 +118,7 @@ export default function DataTableDemo() {
   const [columnFilters, setColumnFilters] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [rowSelection, setRowSelection] = React.useState({});
-
+  const [showTheForm, setShowTheForm] = React.useState("");
   const table = useReactTable({
     data,
     columns,
@@ -139,6 +140,7 @@ export default function DataTableDemo() {
 
   return (
     <div className="w-full p-5 pt-20" dir="rtl">
+  
       <div className="flex items-center py-4">
         <Input
           placeholder="فلترة حسب الاسم..."
@@ -148,10 +150,10 @@ export default function DataTableDemo() {
           }
           className="max-w-sm border border-black"
         />
-        <Button variant="outline " className='mr-5 bg-green-500 cursor-pointer'>اضافة منتج</Button>
+        <Button onClick={()=>setShowTheForm("true")} variant="outline " className='mr-5 bg-green-500 cursor-pointer'>اضافة منتج</Button>
       </div>
 
-      <div className="overflow-hidden rounded-md border">
+      <div className="overflow-hidden rounded-md border bg-white">
         {loading ? (
           <div className="p-10 text-center text-gray-500">جارِ التحميل...</div>
         ) : (
@@ -198,6 +200,19 @@ export default function DataTableDemo() {
           </Table>
         )}
       </div>
+      {/* =================form ============= */}
+      {showTheForm !== "" && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+          <AddProduct
+            setShowForm={setShowTheForm}
+            showTheForm={showTheForm}
+            
+            className="relative bg-white rounded-xl shadow-xl p-6"
+          />
+        </div>
+      )}
+      {/* =================form ============= */}
+
     </div>
   );
 }
