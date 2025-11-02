@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { apiRequest } from "@/lib/request";
 
-export default function ProductForm({ setShowForm, showTheForm, selectedItem }) {
+export default function ProductForm({ setShowForm, selectedItem }) {
   // Load store_id from localStorage or use 12 as fallback
   const storeId = localStorage.getItem("store_id") || 12;
 
@@ -21,56 +21,71 @@ export default function ProductForm({ setShowForm, showTheForm, selectedItem }) 
     name: "",
     description: "",
     price: "",
-    stock_qty: "", // this is statct value 
+    stock_qty: "",
     sku: "",
-    image_url: "",
+    logo: null,
   });
 
-  // If editing an item, prefill form
+  // Prefill data if editing an item
   useEffect(() => {
     if (selectedItem) {
       setFormData({
         store_id: storeId,
-        name: selectedItem.name || "", 
-        description: selectedItem.description || "", 
+        name: selectedItem.name || "",
+        description: selectedItem.description || "",
         price: selectedItem.price || "",
         stock_qty: selectedItem.stock_qty || "",
-        sku: selectedItem.sku || "", // this is statct value 
-        image_url: selectedItem.image_url || "",
+        sku: selectedItem.sku || "",
+        logo: null, // file inputs can’t be prefilled for security
       });
     }
   }, [selectedItem, storeId]);
 
+  // Handle field changes
   const handleChange = (e) => {
-    const { id, value } = e.target;
+    const { id, value, files } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [id]: ["price", "stock_qty"].includes(id) ? Number(value) : value,
+      [id]:
+        id === "logo"
+          ? files[0] // store actual file object
+          : ["price", "stock_qty"].includes(id)
+          ? Number(value)
+          : value,
     }));
   };
 
+  // Submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("jwt");
 
+      // Create FormData for file upload
+      const form = new FormData();
+      for (let key in formData) {
+        form.append(key, formData[key]);
+      }
+
       await apiRequest("product/createProduct", {
         method: "POST",
-        body: formData,
+        body: form,
         token,
+        isFormData: true,
       });
 
-      alert(`✅ Product saved successfully!`);
+      // Reset form
       setFormData({
         store_id: storeId,
         name: "",
         description: "",
         price: "",
         stock_qty: "",
-     sku: "", // this is statct value 
-        image_url: "",
+        sku: "",
+        logo: null,
       });
 
+      alert("✅ Product saved successfully!");
       if (typeof setShowForm === "function") setShowForm(false);
     } catch (error) {
       console.error("❌ Error saving product:", error);
@@ -81,9 +96,7 @@ export default function ProductForm({ setShowForm, showTheForm, selectedItem }) 
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle>
-          {showTheForm === "edit" ? "Edit Product" : "Add Product"}
-        </CardTitle>
+        <CardTitle>اضافة منتج</CardTitle>
       </CardHeader>
 
       <CardContent>
@@ -132,8 +145,8 @@ export default function ProductForm({ setShowForm, showTheForm, selectedItem }) 
               required
             />
           </div>
-{/* ======================================= */}
 
+          {/* Optional SKU field */}
           {/* <div className="grid gap-2">
             <Label htmlFor="sku">SKU</Label>
             <Input
@@ -141,23 +154,22 @@ export default function ProductForm({ setShowForm, showTheForm, selectedItem }) 
               type="text"
               value={formData.sku}
               onChange={handleChange}
-              required
             />
           </div> */}
-{/* ======================================= */}
+
           <div className="grid gap-2">
-            <Label htmlFor="image_url">Image URL</Label>
+            <Label htmlFor="logo">صوره المنتج</Label>
             <Input
-              id="image_url"
-              type="url"
-              value={formData.image_url}
+              id="logo"
+              type="file"
+              accept="image/*"
               onChange={handleChange}
             />
           </div>
 
           <CardFooter className="flex-col gap-2 px-0">
             <Button type="submit" className="w-full">
-              SAVE
+              اضافة
             </Button>
             <Button
               type="button"
@@ -171,12 +183,12 @@ export default function ProductForm({ setShowForm, showTheForm, selectedItem }) 
                   price: "",
                   stock_qty: "",
                   sku: "",
-                  image_url: "",
+                  logo: null,
                 });
                 if (typeof setShowForm === "function") setShowForm("");
               }}
             >
-              CANCEL
+              الغاء
             </Button>
           </CardFooter>
         </form>

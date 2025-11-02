@@ -1,8 +1,7 @@
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
+// 'use client'
 
+import "./globals.css";
+import Nav from "./nav";
 
 export const metadata = {
   title: "store",
@@ -13,31 +12,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ar">
       <body className=" h-screen   bg-gradient-to-br from-gray-400-400 via-gray-100 to-gray-50">
-        <nav className="bg-white fixed shadow-md py-4 px-6  w-screen" dir="rtl">
-          <div className="container mx-auto flex flex-row justify-between items-center">
-            <div className="flex justify-center items-center flex-row">
-              {" "}
-              <Image
-                src="/dokkani-logo.svg"
-                alt="Dokkani Logo"
-                width={50}
-                height={50}
-              />
-              <p
-                className="text-xl font-bold "
-                style={{ color: "lab(32 -1.69 -39.12)" }}
-              >
-                دكّا<span className="text-orange-400">ني</span>
-              </p>
-            </div>
-
-            <div>
-              <Button className="bg-orange-300 text-black font-bold cursor-pointer">
-                تسجيل الدخول
-              </Button>
-            </div>
-          </div>
-        </nav>
+        <Nav />
 
         {children}
       </body>

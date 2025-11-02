@@ -1,7 +1,10 @@
+'use client'
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Pointer } from "lucide-react";
+import { useRouter } from "next/navigation";
 export default function Home() {
+  const router = useRouter();
   return (
     <div className="font-sans flex flex-col justify-center  items-center min-h-screen p-8 pb-20 gap-16 sm:px-30">
       <div
@@ -24,7 +27,7 @@ export default function Home() {
         <Button className="cursor-pointer sm:w-54 h-15 text-2xl rounded-2xl text-[#ffff] ">
           تسوق
         </Button>
-        <Button className="cursor-pointer sm:w-60 h-15 text-2xl rounded-2xl text-[#ffff] ">
+        <Button  className="cursor-pointer sm:w-60 h-15 text-2xl rounded-2xl text-[#ffff] " onClick={() => router.push('/registration')}>
           انشاء متجرك الخاص
         </Button>
       </div>

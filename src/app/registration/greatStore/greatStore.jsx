@@ -5,17 +5,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { apiRequest } from "@/lib/request";
-import { useGlobalState } from "./context/GlobalState";
-
+import { useGlobalState } from "../context/GlobalState";
+import { useRouter } from "next/navigation";
 export default function CreateStore() {
     const { logo, setLogo, storeName, setStoreName } = useGlobalState();
     
     // const token = localStorage.getItem("jwt")
-
+const router = useRouter();
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const tooken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjcsImlhdCI6MTc1NTAxMjIwNX0.-8bnn9DIce_VRrCedziJBxpFxMj_N4LCreO9FeFL8eM";
+        const tooken = localStorage.getItem("jwt");
+        
 
         const formData = new FormData();
         formData.append("store_name", storeName);
@@ -32,6 +33,7 @@ export default function CreateStore() {
             });
 
             console.log("Store created successfully:", result);
+router.push(`/dashboard`);
         } catch (error) {
             console.error("Error creating store:", error);
         }

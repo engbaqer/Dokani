@@ -9,9 +9,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { apiRequest } from "@/lib/request";
-
+import { useRouter } from "next/navigation";
 export default function LoginForm() {
     const { email, setEmail, password, setPassword } = useGlobalState();
+const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -26,9 +27,9 @@ export default function LoginForm() {
                 method: "POST",
                 body: payload,
             });
-
+router.push("/dashboard");
             console.log("Login successful:", result);
-
+             
             // Example: save token to localStorage
             if (result.token) {
                 localStorage.setItem("jwt", result.token);
