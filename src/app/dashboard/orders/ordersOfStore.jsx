@@ -67,8 +67,6 @@ export const columns = [
     cell: ({ row }) => {
       const phoneNumber =
         row.getValue("phone_number") ||
-        row.original.phoneNumber ||
-        row.original.phone ||
         "غير محدد";
       return (
         <div className="font-medium text-gray-900 text-right">
