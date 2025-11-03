@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -9,12 +9,13 @@ import { useGlobalState } from "../context/GlobalState";
 import { useRouter } from "next/navigation";
 export default function CreateStore() {
     const { logo, setLogo, storeName, setStoreName } = useGlobalState();
-    
+    const [isLoading, setIsLoading] = useState(false);
     // const token = localStorage.getItem("jwt")
 const router = useRouter();
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        if (!storeName || !logo) return;
+        setIsLoading(true);
         const tooken = localStorage.getItem("jwt");
         
 
@@ -36,42 +37,45 @@ const router = useRouter();
 router.push(`/dashboard`);
         } catch (error) {
             console.error("Error creating store:", error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
     
     return (
         <Card className="w-full max-w-sm">
-            <CardHeader>
-                <CardTitle>إنشاء متجر جديد</CardTitle>
+            <CardHeader className="text-center">
+                <CardTitle className="text-xl">إنشاء متجر جديد</CardTitle>
+                <CardDescription>أدخل اسم المتجر وارفع شعاراً واضحاً.</CardDescription>
             </CardHeader>
             <CardContent>
-                <form onSubmit={handleSubmit}>
-                    <div className="flex flex-col gap-6">
-                        <div className="grid gap-2">
-                            <Label htmlFor="storeName">اسم المتجر</Label>
-                            <Input
-                                id="storeName"
-                                type="text"
-                                value={storeName}
-                                onChange={(e) => setStoreName(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="grid gap-2">
-                            <Label htmlFor="logo">شعار المتجر</Label>
-                            <Input
-                                id="logo"
-                                type="file"
-                                accept="image/*"
-                                onChange={(e) => setLogo(e.target.files[0])}
-                                required
-                            />
-                        </div>
+                <form onSubmit={handleSubmit} className="space-y-5">
+                    <div className="grid gap-2">
+                        <Label htmlFor="storeName">اسم المتجر</Label>
+                        <Input
+                            id="storeName"
+                            type="text"
+                            value={storeName}
+                            onChange={(e) => setStoreName(e.target.value)}
+                            autoComplete="organization"
+                            required
+                        />
                     </div>
-                    <CardFooter className="flex-col gap-2 mt-4">
-                        <Button type="submit" className="w-full">
-                            إنشاء متجر
+                    <div className="grid gap-1.5">
+                        <Label htmlFor="logo">شعار المتجر</Label>
+                        <Input
+                            id="logo"
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => setLogo(e.target.files[0])}
+                            required
+                        />
+                        <p className="text-xs text-muted-foreground">يدعم PNG و JPG حتى 5MB.</p>
+                    </div>
+                    <CardFooter className="flex-col gap-3 p-0">
+                        <Button type="submit" className="w-full" disabled={isLoading || !storeName || !logo}>
+                            {isLoading ? "جاري إنشاء المتجر..." : "إنشاء متجر"}
                         </Button>
                     </CardFooter>
                 </form>
