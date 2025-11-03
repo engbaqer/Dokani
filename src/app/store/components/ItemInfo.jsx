@@ -1,10 +1,11 @@
 "use client"
 import { CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
-export default function ItemInfo({ item }) {
+export default function ItemInfo({ item, onOrderClick }) {
     if (!item) return null;
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 ">
             {(item.image_url || item.logo || item.image || item.imageUrl) && (
                 <div className="w-full aspect-[4/3] bg-gray-100 overflow-hidden rounded-md">
                     <img
@@ -23,6 +24,11 @@ export default function ItemInfo({ item }) {
                 <span className="text-sm text-muted-foreground">السعر: </span>
                 <span className="font-medium">{item.price}  IQ</span>
             </div>
+            {typeof onOrderClick === "function" && (
+                <div className="pt-2">
+                    <Button onClick={onOrderClick} className="w-full">اطلب الآن</Button>
+                </div>
+            )}
         </div>
     );
 }

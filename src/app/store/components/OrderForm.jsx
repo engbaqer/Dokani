@@ -19,13 +19,13 @@ export default function OrderForm({ storeId, productId, unitPrice, onSuccess }) 
         setLoading(true);
         try {
             const payload = {
-                store_id: storeId,
-                product_id: productId,
+                store_id: Number(storeId),
+                product_id: Number(productId),
                 quantity: Number(quantity),
                 unit_price: Number(unitPrice),
                 phone_number: phoneNumber
             };
-            await apiRequest("orders/create", { method: "POST", body: payload });
+            await apiRequest("order/create", { method: "POST", body: payload });
             if (onSuccess) onSuccess();
         } finally {
             setLoading(false);
@@ -60,7 +60,7 @@ export default function OrderForm({ storeId, productId, unitPrice, onSuccess }) 
             </div>
             <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">الإجمالي</span>
-                <span className="font-semibold">{totalPrice}</span>
+                <span className="font-semibold"> ${totalPrice} IQ</span>
             </div>
             <CardFooter className="p-0">
                 <Button type="submit" className="w-full" disabled={loading || !quantity || !phoneNumber}>

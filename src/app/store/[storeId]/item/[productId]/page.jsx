@@ -44,8 +44,8 @@ export default function ItemDetailPage() {
     }
 
     return (
-        <div className="h-screen flex justify-center items-center w-full  p-6 " dir="rtl">
-            <Card className="max-w-3xl mx-auto w-full">
+        <div className="h-screen flex justify-center items-center w-full  p-6  " dir="rtl">
+            <Card className="max-w-3xl mx-auto w-full pt-10">
                 <CardHeader className="text-center">
                     <CardTitle className="text-xl">{view === "order" ? "طلب المنتج" : "تفاصيل المنتج"}</CardTitle>
                     <CardDescription>{view === "order" ? "أدخل بياناتك لإرسال الطلب." : ""}</CardDescription>
@@ -60,7 +60,7 @@ export default function ItemDetailPage() {
                             {view === "order" ? (
                                 <OrderForm storeId={storeId} productId={productId} unitPrice={unitPrice} onSuccess={() => router.back()} />
                             ) : (
-                                <ItemInfo item={item} />
+                                <ItemInfo item={item} onOrderClick={() => switchView("order")} />
                             )}
                         </div>
                     )}

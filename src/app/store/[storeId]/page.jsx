@@ -65,7 +65,7 @@ export default function StorePage() {
                     ) : items.length === 0 ? (
                         <div className="text-center py-10 text-muted-foreground">لا توجد منتجات متاحة.</div>
                     ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 ">
                             {items
                                 .slice((pageFromUrl - 1) * PAGE_SIZE, (pageFromUrl) * PAGE_SIZE)
                                 .map((item) => (
