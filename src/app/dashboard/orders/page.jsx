@@ -33,10 +33,11 @@ export default function OrdersPage() {
   // === Fetch orders on mount ===
   React.useEffect(() => {
     const fetchOrders = async () => {
+      const storeId = localStorage.getItem("storeId");
       try {
         setLoading(true);
         // Update this endpoint to match your orders API
-        const response = await apiRequest("order/getOrderItemsByStore/12", {
+        const response = await apiRequest(`order/getOrderItemsByStore/${storeId}`, {
           method: "GET",
           // token: token,
         });
@@ -132,37 +133,6 @@ export default function OrdersPage() {
           <p className="text-gray-600 mt-1">إدارة ومتابعة جميع طلبات المتجر</p>
         </div>
 
-        {/* Statistics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-blue-700">
-                إجمالي الطلبات
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-blue-900">
-                {totalOrders}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-green-700">
-                إجمالي الإيرادات
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-green-900">
-                {new Intl.NumberFormat("ar-EG", {
-                  style: "currency",
-                  currency: "EGP",
-                }).format(totalRevenue)}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
       </div>
 
       {/* Filters and Search Section */}

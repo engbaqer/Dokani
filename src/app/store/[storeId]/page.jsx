@@ -53,7 +53,7 @@ export default function StorePage() {
     };
 
     return (
-        <div className=" mx-auto  min-h-screen w-full bg-gray-50 p-9" dir="rtl">
+        <div className=" mx-auto  min-h-screen w-full bg-gray-50 p-5 pt-22" dir="rtl">
             <Card className="max-w-6xl mx-auto">
                 <CardHeader className="text-center">
                     {/* <CardTitle className="text-xl"> </CardTitle> */}

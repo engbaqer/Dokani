@@ -24,7 +24,7 @@ export default function Home() {
       </div>
 
       <div className="flex gap-5">
-        <Button className="cursor-pointer sm:w-54 h-15 text-2xl rounded-2xl text-[#ffff] ">
+        <Button className="cursor-pointer sm:w-54 h-15 text-2xl rounded-2xl text-[#ffff]  " onClick={() => router.push('/AllStores')}>
           تسوق
         </Button>
         <Button  className="cursor-pointer sm:w-60 h-15 text-2xl rounded-2xl text-[#ffff] " onClick={() => router.push('/registration')}>

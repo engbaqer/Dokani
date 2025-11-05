@@ -15,6 +15,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { apiRequest } from "@/lib/request";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useStateOfAllProject } from "../context/useStateOfAllProject";
 
 const PAGE_SIZE = 20;
 
@@ -24,6 +25,7 @@ export default function AllStoresPage() {
   const page = parseInt(searchParams.get("page") || "1");
   const [stores, setStores] = useState([]);
   const [loading, setLoading] = useState(false);
+    const {  setImgUrl, setNameOfStore  } = useStateOfAllProject();
 
   const totalPages = Math.max(1, Math.ceil(stores.length / PAGE_SIZE));
 
@@ -55,12 +57,9 @@ export default function AllStoresPage() {
   }
 
   return (
-    <div className="mx-auto min-h-screen w-full bg-gray-50 p-9 pt-22" dir="rtl">
+    <div className="mx-auto min-h-screen w-full bg-gray-50 p-5 pt-22" dir="rtl">
       <Card className="max-w-6xl mx-auto">
-        <CardHeader className="text-center">
-          <CardTitle className="text-xl">كل المتاجر</CardTitle>
-          <CardDescription>تصفح جميع المتاجر المتاحة على المنصة</CardDescription>
-        </CardHeader>
+     
 
         <CardContent>
           {loading ? (
@@ -76,7 +75,7 @@ export default function AllStoresPage() {
                     {store.logo_url && (
                       <div className="w-full aspect-[4/3] bg-gray-100 overflow-hidden">
                         <img
-                          src={`${process.env.NEXT_PUBLIC_API_URL}/${store.logo_url.replace(/\\/g, "/")}`}
+                          src={`${process.env.NEXT_PUBLIC_API_URL}${store.logo_url}`}
                           alt={store.store_name}
                           className="w-full h-full object-cover"
                           loading="lazy"
@@ -91,7 +90,7 @@ export default function AllStoresPage() {
                     </CardHeader>
 
                     <CardFooter className="justify-end">
-                      <Button size="sm" onClick={() => router.push(`/store/${store.id}`)}>
+                      <Button size="sm" onClick={() => { setImgUrl(store.logo_url); setNameOfStore(store.store_name); router.push(`/store/${store.id}`)}}>
                         عرض المتجر
                       </Button>
                     </CardFooter>

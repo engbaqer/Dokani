@@ -7,9 +7,12 @@ import { Button } from "@/components/ui/button";
 import { apiRequest } from "@/lib/request";
 import { useGlobalState } from "../context/GlobalState";
 import { useRouter } from "next/navigation";
+import { useStateOfAllProject } from "../../context/useStateOfAllProject";
+
 export default function CreateStore() {
     const { logo, setLogo, storeName, setStoreName } = useGlobalState();
     const [isLoading, setIsLoading] = useState(false);
+    const {  setImgUrl, setNameOfStore  } = useStateOfAllProject();
     // const token = localStorage.getItem("jwt")
 const router = useRouter();
     const handleSubmit = async (e) => {
@@ -32,7 +35,8 @@ const router = useRouter();
                 token: tooken,
                 isFormData: true       // Inform apiRequest not to stringify or set JSON headers
             });
-
+            setImgUrl(result.logo_url || "");
+            setNameOfStore(result.slug || "");
             console.log("Store created successfully:", result);
 router.push(`/dashboard`);
         } catch (error) {

@@ -29,6 +29,7 @@ export default function RegistrationForm() {
             });
 
             console.log("Registration successful:", result);
+            localStorage.setItem("jwt", result.token);
             router.push(`/registration/greatStore`);
         } catch (error) {
             console.error("Error registering:", error);

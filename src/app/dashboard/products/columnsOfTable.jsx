@@ -112,6 +112,7 @@ export const columns = [
     cell: ({ row, table }) => {
       const product = row.original;
       const token = localStorage.getItem("jwt");
+      
       const { setShowTheFormOFupdate, setProductIdForEditing } = useDashboardState();
       const removeRow = table.options.meta?.removeRow;
 

@@ -14,7 +14,7 @@ import { apiRequest } from "@/lib/request";
 
 export default function ProductForm({ setShowForm, selectedItem }) {
   // Load store_id from localStorage or use 12 as fallback
-  const storeId = localStorage.getItem("store_id") || 12;
+  const storeId = localStorage.getItem("storeId");
 
   const [formData, setFormData] = useState({
     store_id: storeId,

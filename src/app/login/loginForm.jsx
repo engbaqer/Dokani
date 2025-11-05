@@ -2,6 +2,7 @@
 
 // ==================="this context from registration file"==========================
 import { useGlobalState } from "../registration/context/GlobalState";
+import { useStateOfAllProject } from "../context/useStateOfAllProject";
 // ==================="this context from registration file"==========================
 import {useState} from "react";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from "@/components/ui/card";
@@ -12,6 +13,7 @@ import { apiRequest } from "@/lib/request";
 import { useRouter } from "next/navigation";
 export default function LoginForm() {
     const { email, setEmail, password, setPassword } = useGlobalState();
+    const {  setImgUrl, setNameOfStore  } = useStateOfAllProject();
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -29,13 +31,20 @@ export default function LoginForm() {
                 method: "POST",
                 body: payload,
             });
+            // Example: save token to localStorage
+            try {
+                const dataOFStore = await apiRequest("store/getUserStores", {
+                    method: "GET",
+                    token: result.token,
+                }); console.log("User stores data:", dataOFStore)
+
+                setImgUrl(dataOFStore[0].logo_url || "");
+                setNameOfStore(dataOFStore[0].store_name || "");
+               
+            } catch (err) { console.log(err); }
+            localStorage.setItem("jwt", result.token);
             router.push("/dashboard");
             console.log("Login successful:", result);
-             
-            // Example: save token to localStorage
-            if (result.token) {
-                localStorage.setItem("jwt", result.token);
-            }
         } catch (error) {
             console.error("Error logging in:", error);
         } finally {

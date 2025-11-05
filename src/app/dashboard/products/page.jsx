@@ -37,9 +37,10 @@ export default function ProductsPage() {
   // === Fetch products on mount ===
   React.useEffect(() => {
     const fetchProducts = async () => {
+      const storeId = localStorage.getItem("storeId");
       try {
         setLoading(true);
-        const response = await apiRequest("product/getProductsByStore/store/12", {
+        const response = await apiRequest(`product/getProductsByStore/store/${storeId}`, {
           method: "GET",
         });
         console.log("Fetched products:", response);
