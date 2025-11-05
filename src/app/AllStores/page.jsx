@@ -1,31 +1,27 @@
 "use client";
 
-/*
-  ✅ Commit: feat: simplify AllStoresPage to match new store API response
-
-  🔹 Updated to handle API returning a plain array of stores (not { items: [...] }).
-  🔹 Simplified fetching logic for better readability and performance.
-  🔹 Fixed logo paths by converting Windows backslashes to forward slashes.
-  🔹 Improved pagination and loading state handling.
-  🔹 Clean, minimal, and easy-to-maintain version for listing all stores.
-*/
-
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { apiRequest } from "@/lib/request";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+  CardDescription,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useStateOfAllProject } from "../context/useStateOfAllProject";
 
 const PAGE_SIZE = 20;
 
-export default function AllStoresPage() {
+function AllStoresInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = parseInt(searchParams.get("page") || "1");
+
   const [stores, setStores] = useState([]);
   const [loading, setLoading] = useState(false);
-    const {  setImgUrl, setNameOfStore  } = useStateOfAllProject();
 
   const totalPages = Math.max(1, Math.ceil(stores.length / PAGE_SIZE));
 
@@ -33,13 +29,11 @@ export default function AllStoresPage() {
     getStores();
   }, [page]);
 
-  // 🔸 Fetch all stores from the API
   async function getStores() {
     setLoading(true);
     try {
       const data = await apiRequest("store/getAllStores");
-      if (Array.isArray(data)) setStores(data);
-      else setStores([]);
+      setStores(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error("Failed to load stores:", err);
       setStores([]);
@@ -48,7 +42,6 @@ export default function AllStoresPage() {
     }
   }
 
-  // 🔸 Handle pagination navigation
   function goToPage(num) {
     const next = Math.min(Math.max(1, num), totalPages);
     const qs = new URLSearchParams(searchParams.toString());
@@ -59,13 +52,13 @@ export default function AllStoresPage() {
   return (
     <div className="mx-auto min-h-screen w-full bg-gray-50 p-5 pt-22" dir="rtl">
       <Card className="max-w-6xl mx-auto">
-     
-
         <CardContent>
           {loading ? (
             <div className="text-center py-10">جاري التحميل...</div>
           ) : stores.length === 0 ? (
-            <div className="text-center py-10 text-muted-foreground">لا توجد متاجر متاحة.</div>
+            <div className="text-center py-10 text-muted-foreground">
+              لا توجد متاجر متاحة.
+            </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {stores
@@ -82,15 +75,16 @@ export default function AllStoresPage() {
                         />
                       </div>
                     )}
-
                     <CardHeader>
                       <CardTitle className="text-base line-clamp-1">
                         {store.store_name}
                       </CardTitle>
                     </CardHeader>
-
                     <CardFooter className="justify-end">
-                      <Button size="sm" onClick={() => { setImgUrl(store.logo_url); setNameOfStore(store.store_name); router.push(`/store/${store.id}`)}}>
+                      <Button
+                        size="sm"
+                        onClick={() => router.push(`/store/${store.id}`)}
+                      >
                         عرض المتجر
                       </Button>
                     </CardFooter>
@@ -125,5 +119,13 @@ export default function AllStoresPage() {
         </CardFooter>
       </Card>
     </div>
+  );
+}
+
+export default function AllStoresPage() {
+  return (
+    <Suspense fallback={<div className="p-10 text-center">جاري التحميل...</div>}>
+      <AllStoresInner />
+    </Suspense>
   );
 }
