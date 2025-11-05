@@ -10,7 +10,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "your-production-domain.com",
+        hostname: "storesplatform-api-production-ca3f.up.railway.app",
         pathname: "/**", // optional: add your real API domain for deployment
       },
     ],
