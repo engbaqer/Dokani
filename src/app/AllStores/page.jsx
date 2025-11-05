@@ -12,6 +12,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useStateOfAllProject } from "../context/useStateOfAllProject";
 
 const PAGE_SIZE = 20;
 
@@ -19,6 +20,7 @@ function AllStoresInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const page = parseInt(searchParams.get("page") || "1");
+    const {  setImgUrl, setNameOfStore  } = useStateOfAllProject();
 
   const [stores, setStores] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -83,7 +85,7 @@ function AllStoresInner() {
                     <CardFooter className="justify-end">
                       <Button
                         size="sm"
-                        onClick={() => router.push(`/store/${store.id}`)}
+                        onClick={() =>{setImgUrl(store.logo_url); setNameOfStore(store.store_name); router.push(`/store/${store.id}`)}}
                       >
                         عرض المتجر
                       </Button>
