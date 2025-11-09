@@ -40,7 +40,7 @@ export default function LoginForm() {
 
                 setImgUrl(dataOFStore[0].logo_url || "");
                 setNameOfStore(dataOFStore[0].store_name || "");
-               
+               localStorage.setItem("storeId", dataOFStore[0].id);
             } catch (err) { console.log(err); }
             localStorage.setItem("jwt", result.token);
             router.push("/dashboard");

@@ -37,6 +37,7 @@ const router = useRouter();
             });
             setImgUrl(result.logo_url || "");
             setNameOfStore(result.slug || "");
+            localStorage.setItem("storeId", result.storeId);
             console.log("Store created successfully:", result);
 router.push(`/dashboard`);
         } catch (error) {
